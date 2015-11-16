@@ -6,15 +6,15 @@ import org.eclipse.swt.events.FocusEvent;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LButtonTest {
+public class LambdaButtonTest {
 
-	private LButton lButton;
-	private LLabel lLabel;
+	private LambdaButton lButton;
+	private LambdaLabel lLabel;
 
 	@Before
 	public void setUp() {
-		lButton = new LButton(null, 0);
-		lLabel = new LLabel(null, 0);
+		lButton = new LambdaButton(null, 0);
+		lLabel = new LambdaLabel(null, 0);
 	}
 	
 	@Test
