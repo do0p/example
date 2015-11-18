@@ -1,11 +1,13 @@
 package sample;
 
-import mixins.FocusListenerMixin;
-
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
-public class LambdaLabel extends Label implements FocusListenerMixin{
+import mixins.FocusListenerMixin;
+import mixins.KeyListenerMixin;
+import mixins.MouseListenerMixin;
+
+public class LambdaLabel extends CLabel implements KeyListenerMixin, FocusListenerMixin, MouseListenerMixin{
 
 	public LambdaLabel(Composite parent, int style) {
 		super(parent, style);
