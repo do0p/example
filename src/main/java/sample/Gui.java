@@ -21,30 +21,20 @@ public class Gui {
 	}
 	
 	public Gui() {
-
 		Display display = new Display();
+		Shell shell = createShell(display);
 
-		Shell shell = new Shell(display);
-		GridLayout layout = new GridLayout(1, false);
-		shell.setLayout(layout);
-		shell.setText("example");
-
-		LambdaLabel label = new LambdaLabel(shell, SWT.TOP);
-		label.setLayoutData(new GridData(400, 300));
-		label.setText("this is a " + label.getClass().getSimpleName());
-
+		LambdaLabel label = createLambdaLabel(shell);
 		addAdapterListeners(label);
 		addLambdaListeners(label);
 
 		try {
 			shell.pack();
 			shell.open();
-
 			while (!shell.isDisposed()) {
 				if (!display.readAndDispatch()) {
 					display.sleep();
 				}
-
 			}
 		} finally {
 			display.dispose();
@@ -121,6 +111,19 @@ public class Gui {
 	private void doLog(String message) {
 		System.err.println(message);
 	}
+	
+	private Shell createShell(Display display) {
+		Shell shell = new Shell(display);
+		GridLayout layout = new GridLayout(1, false);
+		shell.setLayout(layout);
+		shell.setText("example");
+		return shell;
+	}
 
-
+	private LambdaLabel createLambdaLabel(Shell shell) {
+		LambdaLabel label = new LambdaLabel(shell, SWT.TOP);
+		label.setLayoutData(new GridData(400, 300));
+		label.setText("this is a " + label.getClass().getSimpleName());
+		return label;
+	}
 }
