@@ -7,8 +7,8 @@ import mixins.KeyListenerMixin;
 import mixins.MouseListenerMixin;
 
 /**
- * This class inherits functionality by its superclass {@link CLabel} as well as by the default implementations
- * of its interfaces. 
+ * This class inherits functionality by its superclass {@link CLabel} as well as
+ * by the default implementations of its interfaces.
  */
 public class LambdaLabel extends CLabel implements KeyListenerMixin, MouseListenerMixin {
 
