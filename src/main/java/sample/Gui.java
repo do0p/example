@@ -4,7 +4,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.TypedEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -14,6 +16,10 @@ import org.eclipse.swt.widgets.Shell;
 import mixins.KeyListenerAdapter;
 import mixins.MouseListenerAdapter;
 
+/**
+ * Example gui demonstrating various possibilities to register listeners.
+ *  
+ */
 public class Gui {
 
 	public static void main(String[] args) {
@@ -24,9 +30,10 @@ public class Gui {
 		Display display = new Display();
 		Shell shell = createShell(display);
 
-		LambdaLabel label = createLambdaLabel(shell);
-		addAdapterListeners(label);
-		addLambdaListeners(label);
+		LambdaLabel lambdaLabel = createLambdaLabel(shell);
+		addListeners(lambdaLabel, "interface");
+		addAdapterListeners(lambdaLabel, "adapter");
+		addLambdaListeners(lambdaLabel, "mixin");
 
 		try {
 			shell.pack();
@@ -41,71 +48,116 @@ public class Gui {
 		}
 	}
 
-	private void addAdapterListeners(LambdaLabel lLabel) {
+	/**
+	 * Adds listeners as anonymous subclasses of the listener interfaces. 
+	 * Every method in the interface must be overridden. 
+	 * 
+	 * @param lLabel
+	 * @param name
+	 */
+	private void addListeners(LambdaLabel lLabel, String name) {
 		lLabel.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent event) {
-				logEvent(event);
+				onDispose(event, name);
+			}
+		});
+		lLabel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseDoubleClick(MouseEvent event) {
+				onMouseDoubleClick(event, name);
+			}
+
+			@Override
+			public void mouseDown(MouseEvent event) {
+				// nothing todo
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// nothing todo
+			}
+		});
+		lLabel.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent event) {
+				onKeyPressed(event, name);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent event) {
+				onKeyReleased(event, name);			}
+		});
+	}
+	
+	/**
+	 * Adds listeners as anonymous subclasses of the listener adapter interfaces.
+	 * Only the method of interest has to be overridden, because there are default 
+	 * implementations of all methods. 
+	 * 
+	 * @param lLabel
+	 */
+	private void addAdapterListeners(LambdaLabel lLabel, String name) {
+		lLabel.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent event) {
+				onDispose(event, name);
 			}
 		});
 		lLabel.addMouseListener(new MouseListenerAdapter() {
 			@Override
 			public void mouseDoubleClick(MouseEvent event) {
-				onMouseDoubleClick(event);
-			}
-		});
-		lLabel.addMouseListener(new MouseListenerAdapter() {
-			@Override
-			public void mouseDown(MouseEvent event) {
-				onMouseDown(event);
+				onMouseDoubleClick(event, name);
 			}
 		});
 		lLabel.addKeyListener(new KeyListenerAdapter() {
 			@Override
 			public void keyPressed(KeyEvent event) {
-				onKeyPressed(event);
+				onKeyPressed(event, name);
 			}
 		});
 		lLabel.addKeyListener(new KeyListenerAdapter() {
 			@Override
 			public void keyReleased(KeyEvent event) {
-				onKeyReleased(event);
+				onKeyReleased(event, name);
 			}
 		});
 	}
 	
-	private void addLambdaListeners(LambdaLabel lLabel) {
-		lLabel.addDisposeListener(event -> logEvent(event));
-		lLabel.addMouseDoubleClickedListener(event -> onMouseDoubleClick(event));
-		lLabel.addMouseDownListener(event -> onMouseDown(event));
-		lLabel.addKeyPressedListener(event -> onKeyPressed(event));
-		lLabel.addKeyReleasedListener(event -> onKeyReleased(event));
+	/**
+	 * Adds listeners via the methods provided by the listener mixin interfaces.
+	 * These additional methods take a functional interface as argument and can
+	 * therefore be used with lambda expressions.
+	 * 
+	 * @param lLabel
+	 * @param name 
+	 */
+	private void addLambdaListeners(LambdaLabel lLabel, String name) {
+		lLabel.addDisposeListener(event -> onDispose(event, name));
+		lLabel.addMouseDoubleClickedListener(event -> onMouseDoubleClick(event, name));
+		lLabel.addKeyPressedListener(event -> onKeyPressed(event, name));
+		lLabel.addKeyReleasedListener(event -> onKeyReleased(event, name));
 	}
 
-	private void onKeyReleased(KeyEvent event) {
-		logEvent(event, "key released " + event.keyCode);
+	private void onDispose(DisposeEvent event, String name) {
+		logEvent(event, "dispose", name);
+	}
+	
+	private void onKeyReleased(KeyEvent event, String name) {
+		logEvent(event, "key released " + event.keyCode, name);
 	}
 
-	private void onKeyPressed(KeyEvent event) {
-		logEvent(event, "key pressed " + event.keyCode);
+	private void onKeyPressed(KeyEvent event, String name) {
+		logEvent(event, "key pressed " + event.keyCode, name);
 	}
 
-	private void onMouseDoubleClick(MouseEvent event) {
-		logEvent(event, "double click");
+	private void onMouseDoubleClick(MouseEvent event, String name) {
+		logEvent(event, "double click", name);
 	}
 
-	private void onMouseDown(MouseEvent event) {
-		logEvent(event, "down");
-	}
-
-	private void logEvent(TypedEvent event) {
-		doLog(String.format("Event %s occured on %s", event.getClass().getSimpleName(),
-				event.getSource().getClass().getSimpleName()));
-	}
-
-	private void logEvent(TypedEvent event, String type) {
-		doLog(String.format("Event %s of type %s occured on %s", event.getClass().getSimpleName(), type,
-				event.getSource().getClass().getSimpleName()));
+	private void logEvent(TypedEvent event, String type, String name) {
+		doLog(String.format("Event %s of type %s occured on %s of %s", event.getClass().getSimpleName(), type,
+				event.getSource().getClass().getSimpleName(), name));
 	}
 
 	private void doLog(String message) {
@@ -122,7 +174,7 @@ public class Gui {
 
 	private LambdaLabel createLambdaLabel(Shell shell) {
 		LambdaLabel label = new LambdaLabel(shell, SWT.TOP);
-		label.setLayoutData(new GridData(400, 300));
+		label.setLayoutData(new GridData(400, 100));
 		label.setText("this is a " + label.getClass().getSimpleName());
 		return label;
 	}
