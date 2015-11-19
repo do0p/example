@@ -14,15 +14,12 @@ public interface MouseListenerMixin {
 
 	/**
 	 * This method is defined in {@link Control}.
-	 * 
-	 * @param listener
 	 */
 	void addMouseListener(MouseListener listener);
-	
+
 	/**
-	 * The given consumer will receive a {@link MouseEvent} when a double click occurs.
-	 * 
-	 * @param consumer
+	 * The given consumer will receive a {@link MouseEvent} when a double click
+	 * occurs.
 	 */
 	default void addMouseDoubleClickedListener(Consumer<MouseEvent> consumer) {
 		addMouseListener(new MouseListenerAdapter() {
@@ -32,11 +29,10 @@ public interface MouseListenerMixin {
 			}
 		});
 	}
-	
+
 	/**
-	 * The given consumer will receive a {@link MouseEvent} when a mouse button is pressed.
-	 * 
-	 * @param consumer
+	 * The given consumer will receive a {@link MouseEvent} when a mouse button
+	 * is pressed.
 	 */
 	default void addMouseDownListener(Consumer<MouseEvent> consumer) {
 		addMouseListener(new MouseListenerAdapter() {
@@ -46,11 +42,10 @@ public interface MouseListenerMixin {
 			}
 		});
 	}
-	
+
 	/**
-	 * The given consumer will receive a {@link MouseEvent} when a mouse button is released.
-	 * 
-	 * @param consumer
+	 * The given consumer will receive a {@link MouseEvent} when a mouse button
+	 * is released.
 	 */
 	default void addMouseUpListener(Consumer<MouseEvent> consumer) {
 		addMouseListener(new MouseListenerAdapter() {

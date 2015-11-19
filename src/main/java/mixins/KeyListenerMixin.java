@@ -14,15 +14,11 @@ public interface KeyListenerMixin {
 
 	/**
 	 * This method is defined in {@link Control}.
-	 * 
-	 * @param listener
 	 */
 	void addKeyListener(KeyListener listener);
 
 	/**
 	 * The given consumer will receive a {@link KeyEvent} when a key is pressed.
-	 * 
-	 * @param consumer
 	 */
 	default void addKeyPressedListener(Consumer<KeyEvent> consumer) {
 		addKeyListener(new KeyListenerAdapter() {
@@ -36,8 +32,6 @@ public interface KeyListenerMixin {
 	/**
 	 * The given consumer will receive a {@link KeyEvent} when a key is
 	 * released.
-	 * 
-	 * @param consumer
 	 */
 	default void addKeyReleasedListener(Consumer<KeyEvent> consumer) {
 		addKeyListener(new KeyListenerAdapter() {
@@ -47,5 +41,4 @@ public interface KeyListenerMixin {
 			}
 		});
 	}
-
 }

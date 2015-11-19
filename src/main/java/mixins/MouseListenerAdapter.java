@@ -20,5 +20,4 @@ public interface MouseListenerAdapter extends MouseListener {
 	@Override
 	default void mouseUp(MouseEvent e) {
 	}
-
 }

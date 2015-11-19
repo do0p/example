@@ -18,14 +18,13 @@ import mixins.MouseListenerAdapter;
 
 /**
  * Example gui demonstrating various possibilities to register listeners.
- *  
  */
 public class Gui {
 
 	public static void main(String[] args) {
 		new Gui();
 	}
-	
+
 	public Gui() {
 		Display display = new Display();
 		Shell shell = createShell(display);
@@ -49,11 +48,8 @@ public class Gui {
 	}
 
 	/**
-	 * Adds listeners as anonymous subclasses of the listener interfaces. 
-	 * Every method in the interface must be overridden. 
-	 * 
-	 * @param lLabel
-	 * @param name
+	 * Adds listeners as anonymous subclasses of the listener interfaces. Every
+	 * method in the interface must be overridden.
 	 */
 	private void addListeners(LambdaLabel lLabel, String name) {
 		lLabel.addDisposeListener(new DisposeListener() {
@@ -86,16 +82,15 @@ public class Gui {
 
 			@Override
 			public void keyReleased(KeyEvent event) {
-				onKeyReleased(event, name);			}
+				onKeyReleased(event, name);
+			}
 		});
 	}
-	
+
 	/**
-	 * Adds listeners as anonymous subclasses of the listener adapter interfaces.
-	 * Only the method of interest has to be overridden, because there are default 
-	 * implementations of all methods. 
-	 * 
-	 * @param lLabel
+	 * Adds listeners as anonymous subclasses of the listener adapter
+	 * interfaces. Only the method of interest has to be overridden, because
+	 * there are default implementations of all methods.
 	 */
 	private void addAdapterListeners(LambdaLabel lLabel, String name) {
 		lLabel.addDisposeListener(new DisposeListener() {
@@ -123,14 +118,11 @@ public class Gui {
 			}
 		});
 	}
-	
+
 	/**
 	 * Adds listeners via the methods provided by the listener mixin interfaces.
 	 * These additional methods take a functional interface as argument and can
 	 * therefore be used with lambda expressions.
-	 * 
-	 * @param lLabel
-	 * @param name 
 	 */
 	private void addLambdaListeners(LambdaLabel lLabel, String name) {
 		lLabel.addDisposeListener(event -> onDispose(event, name));
@@ -142,7 +134,7 @@ public class Gui {
 	private void onDispose(DisposeEvent event, String name) {
 		logEvent(event, "dispose", name);
 	}
-	
+
 	private void onKeyReleased(KeyEvent event, String name) {
 		logEvent(event, "key released " + event.keyCode, name);
 	}
@@ -163,7 +155,7 @@ public class Gui {
 	private void doLog(String message) {
 		System.err.println(message);
 	}
-	
+
 	private Shell createShell(Display display) {
 		Shell shell = new Shell(display);
 		GridLayout layout = new GridLayout(1, false);

@@ -16,5 +16,4 @@ public interface KeyListenerAdapter extends KeyListener {
 	@Override
 	default void keyReleased(KeyEvent e) {
 	}
-	
 }
